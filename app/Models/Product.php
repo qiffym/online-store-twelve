@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+class Product extends Model
+{
+    public function variations(): HasMany
+    {
+        return $this->hasMany(Variation::class);
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function getPicture(int $size = 400): string
+    {
+        return $this->picture !== null
+            ? asset("storage/{$this->picture}")
+            : 'https://placehold.co/' . $size . '/000000/FFFFFF/?font=source-sans-pro&text=' . $this->name;
+    }
+}
