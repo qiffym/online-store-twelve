@@ -30,6 +30,7 @@ import { UserMenuContent } from '@/components/user-menu-content';
 import { useInitials } from '@/hooks/use-initials';
 import { cn } from '@/lib/utils';
 import { home, login, register } from '@/routes';
+import products from '@/routes/products';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import {
@@ -47,7 +48,7 @@ import AppLogoIcon from './app-logo-icon';
 const mainNavItems: NavItem[] = [
     {
         title: 'Products',
-        href: '#products',
+        href: products.index().url,
         icon: ShoppingBag,
     },
 ];

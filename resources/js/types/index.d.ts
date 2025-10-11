@@ -41,3 +41,27 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export interface Product {
+    id: number;
+    name: string;
+    slug: string;
+    href: string;
+    imageSrc?: string;
+    imageAlt?: string;
+    description: string | TrustedHTML | null;
+    price: string;
+    category: { id: number; name: string; slug: string };
+    variations: Record<string, Variation[]>;
+    [key: string]: unknown; // This allows for additional properties...
+}
+
+export interface Variation {
+    id: number;
+    attribute_1: string | null;
+    attribute_2: string | null;
+    stock: number;
+    price: string;
+    inStock: boolean;
+    [key: string]: unknown; // This allows for additional properties...
+}
