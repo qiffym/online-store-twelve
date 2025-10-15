@@ -35,6 +35,7 @@ export interface User {
     name: string;
     email: string;
     avatar?: string;
+    cartCount?: number;
     email_verified_at: string | null;
     two_factor_enabled?: boolean;
     created_at: string;
@@ -63,5 +64,13 @@ export interface Variation {
     stock: number;
     price: string;
     inStock: boolean;
+    product: Product;
     [key: string]: unknown; // This allows for additional properties...
+}
+
+export interface Cart {
+    id: number;
+    quantity: number;
+    price: string;
+    variation: Variation
 }

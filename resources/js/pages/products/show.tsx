@@ -1,10 +1,11 @@
 import AppLayout from '@/layouts/app-layout';
 import { cn } from '@/lib/utils';
+import products from '@/routes/products';
 import { type BreadcrumbItem, Product, Variation } from '@/types';
 import { Field, Label, Radio, RadioGroup } from '@headlessui/react';
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import { type ReactElement, useEffect, useMemo, useState } from 'react';
-import products from '@/routes/products';
+import carts from '@/routes/carts';
 
 interface Props {
     product: Product;
@@ -30,20 +31,30 @@ export default function Show({ product }: Props) {
         [variationMap, selectedAttr1],
     );
 
-    const [selectedVariation, setSelectedVariation] = useState<
-        Variation | undefined
-    >(optionsAttr2[0]);
+    const [selectedVariation, setSelectedVariation] = useState<Variation>(
+        optionsAttr2[0],
+    );
 
     // Reset attribute 2 when attribute 1 changes
     useEffect(() => {
         setSelectedVariation(optionsAttr2[0]);
     }, [optionsAttr2]);
 
+    function addToCart(selectedVariation: Variation) {
+        router.post(
+            carts.store(),
+            {
+                variation_id: selectedVariation.id,
+                quantity: 1,
+            },
+            { preserveState: true },
+        );
+    }
+
     return (
         <>
             <Head title={product.name} />
             <div className="px-4 py-6">
-
                 <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
                     <div className="aspect-h-1 aspect-w-1 w-full">
                         <img
@@ -149,7 +160,7 @@ export default function Show({ product }: Props) {
 
                             <div className="mt-10 flex sm:flex-col">
                                 <button
-                                    type="submit"
+                                    onClick={() => addToCart(selectedVariation)}
                                     className="flex max-w-xs flex-1 items-center justify-center rounded-md border border-border bg-primary px-8 py-3 text-base font-medium text-primary-foreground hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none sm:w-full"
                                 >
                                     Add to Cart
@@ -170,5 +181,5 @@ Show.layout = (page: ReactElement<Props>) => {
         { title: product.name, href: '#' },
     ];
 
-    return <AppLayout breadcrumbs={breadcrumbs} children={page} />
+    return <AppLayout breadcrumbs={breadcrumbs} children={page} />;
 };

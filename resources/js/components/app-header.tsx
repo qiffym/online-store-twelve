@@ -34,16 +34,17 @@ import products from '@/routes/products';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import {
-    BookOpen,
     Folder,
     LogIn,
     Menu,
     Search,
-    ShoppingBag,
-    UserPlus,
+    ShoppingBag, ShoppingCart,
+    UserPlus
 } from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
+import carts from '@/routes/carts';
+import { Badge } from '@/components/ui/badge';
 
 const mainNavItems: NavItem[] = [
     {
@@ -60,9 +61,9 @@ const rightNavItems: NavItem[] = [
         icon: Folder,
     },
     {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
+        title: 'Cart',
+        href: carts.index().url,
+        icon: ShoppingCart,
     },
 ];
 
@@ -237,9 +238,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                                             ? item.href
                                                             : item.href.url
                                                     }
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="group ml-1 inline-flex h-9 w-9 items-center justify-center rounded-md bg-transparent p-0 text-sm font-medium text-accent-foreground ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
+                                                    className="group relative ml-1 inline-flex h-9 w-9 items-center justify-center rounded-md bg-transparent p-0 text-sm font-medium text-accent-foreground ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
                                                 >
                                                     <span className="sr-only">
                                                         {item.title}
@@ -251,6 +250,11 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                                         />
                                                     )}
                                                 </a>
+                                                {item.title === 'Cart' && auth.user && (
+                                                    <Badge className="absolute -top-1 -right-1 size-3 rounded-full px-2 font-mono tabular-nums">
+                                                        {auth.user.cartCount}
+                                                    </Badge>
+                                                )}
                                             </TooltipTrigger>
                                             <TooltipContent>
                                                 <p>{item.title}</p>
